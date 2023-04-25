@@ -9,7 +9,7 @@ const Feed = () => {
 			name: 'Anthony',
 			username: '@psytonik',
 			userImage: 'https://anthonyfink.dev/profile.png',
-			img: 'https://images.unsplash.com/photo-1681999683665-6902894af42c',
+			img: 'https://images.unsplash.com/photo-1682336017038-de632a4ec2b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
 			text: 'good colors',
 			timestamp: '2 hours ago'
 		},
@@ -18,7 +18,7 @@ const Feed = () => {
 			name: 'Nitzan',
 			username: '@fandina45',
 			userImage: 'https://cdn.xplace.com/companyLogo/u/m/umszny.png',
-			img: 'https://images.unsplash.com/photo-1682070346575-8c6a27814963',
+			img: 'https://images.unsplash.com/photo-1682344382195-553372019072?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
 			text: 'Nice',
 			timestamp: '6 hours ago'
 		}
