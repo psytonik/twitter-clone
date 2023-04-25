@@ -3,12 +3,14 @@ import Head from "next/head";
 import {FC} from "react";
 import {Article} from "@/interfaces/article";
 import {GetServerSideProps} from "next";
+import {Users} from "@/interfaces/users";
 
 type HomeProps = {
 	articles:Article[],
-	totalResults: number
+	totalArticles: number,
+	users:Users[]
 }
-const Home:FC<HomeProps> = ({articles,totalResults}) => {
+const Home:FC<HomeProps> = ({articles,totalArticles, users}) => {
 	return (
 		<>
 			<Head>
@@ -22,7 +24,7 @@ const Home:FC<HomeProps> = ({articles,totalResults}) => {
 				{/*{Feed}*/}
 				<Feed/>
 				{/*{Widgets}*/}
-				<Widgets articles={articles} total={totalResults}/>
+				<Widgets articles={articles} totalArticles={totalArticles} users={users}/>
 				{/*{Modal}*/}
 			</main>
 		</>
@@ -33,10 +35,16 @@ export default Home;
 const newsLink = "https://saurav.tech/NewsAPI/everything/cnn.json";
 
 export const getServerSideProps:GetServerSideProps = async () => {
-	const newsResult = await fetch(newsLink);
+	const newsResult:Response = await fetch(newsLink);
 	const news = await newsResult.json()
+	const randomUserRes:Response = await fetch('https://randomuser.me/api/?results=50&inc=name,login,picture,email');
+	const users = await randomUserRes.json();
 	return {
-		props: {articles: news.articles,totalResults:news.totalResults}
+		props: {
+			articles: news.articles,
+			totalArticles:news.totalResults,
+			users:users.results
+		}
 	}
 }
 
