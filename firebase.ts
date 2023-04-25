@@ -3,7 +3,6 @@ import { initializeApp, getApp, getApps } from "firebase/app";
 import {getFirestore} from "@firebase/firestore";
 import {getStorage} from "@firebase/storage";
 
-console.log(process.env.NEXT_PUBLIC_FIREBASE_API_KEY,'FB_API_KEY')
 const firebaseConfig = {
 	apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 	authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
