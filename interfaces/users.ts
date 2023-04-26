@@ -20,3 +20,10 @@ export interface Users{
 			"thumbnail": string
 		}
 }
+export interface User {
+	mail: string
+	image:string
+	name:string
+	uid:string
+	username:string
+}
