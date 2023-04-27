@@ -7,18 +7,9 @@ import {
 	ShareIcon,
 	TrashIcon
 } from "@heroicons/react/24/outline";
+import {IPost} from "@/interfaces/post";
 
-interface Post {
-	id: number,
-	name: string,
-	username: string,
-	userImage: string,
-	img: string,
-	text: string,
-	timestamp: string
-}
-
-const Post = ({postData}: { postData: Post }) => {
+const Post = ({postData}: { postData: IPost }) => {
 	const { img, userImage, username, name, timestamp, text} = postData;
 	return (
 		<div className="flex p-3 cursor-pointer border-b border-gray-200">
@@ -43,7 +34,7 @@ const Post = ({postData}: { postData: Post }) => {
 				</div>
 
 				<p className="text-gray-800 text-[15px] sm:text-[16px] mb-2">{text}</p>
-				<img src={img} alt={text} className="rounded-2xl mr-2"/>
+				{img && (<img src={img} alt={text} className="rounded-2xl mr-2"/>)}
 
 				{/*{Icons Block}*/}
 				<div className="flex justify-between text-gray-500 p-2">

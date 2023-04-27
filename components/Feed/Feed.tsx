@@ -1,11 +1,13 @@
 import React from 'react';
 import {SparklesIcon} from "@heroicons/react/24/outline";
 import {Input, Post} from "@/components";
+import {IPost} from "@/interfaces/post";
+
 
 const Feed = () => {
-	const posts = [
+	const posts:IPost[] = [
 		{
-			id: 1,
+			id: '1',
 			name: 'Anthony',
 			username: '@psytonik',
 			userImage: 'https://anthonyfink.dev/profile.png',
@@ -14,7 +16,7 @@ const Feed = () => {
 			timestamp: '2 hours ago'
 		},
 		{
-			id: 2,
+			id: '2',
 			name: 'Nitzan',
 			username: '@fandina45',
 			userImage: 'https://cdn.xplace.com/companyLogo/u/m/umszny.png',
