@@ -3,7 +3,7 @@ export interface IPost {
 	name: string,
 	username: string,
 	userImage: string,
-	img?: string,
+	image?: string,
 	text: string,
-	timestamp: string
+	timestamp: any
 }

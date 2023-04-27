@@ -1,30 +1,21 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SparklesIcon} from "@heroicons/react/24/outline";
 import {Input, Post} from "@/components";
-import {IPost} from "@/interfaces/post";
-
+import {collection, onSnapshot, orderBy, query} from "@firebase/firestore";
+import {db} from "@/firebase";
 
 const Feed = () => {
-	const posts:IPost[] = [
-		{
-			id: '1',
-			name: 'Anthony',
-			username: '@psytonik',
-			userImage: 'https://anthonyfink.dev/profile.png',
-			img: 'https://images.unsplash.com/photo-1682336017038-de632a4ec2b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-			text: 'good colors',
-			timestamp: '2 hours ago'
-		},
-		{
-			id: '2',
-			name: 'Nitzan',
-			username: '@fandina45',
-			userImage: 'https://cdn.xplace.com/companyLogo/u/m/umszny.png',
-			img: 'https://images.unsplash.com/photo-1682344382195-553372019072?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-			text: 'Nice',
-			timestamp: '6 hours ago'
-		}
-	]
+	const [posts, setPosts] = useState<any>([]);
+	useEffect(() => {
+		onSnapshot(
+			query(collection(db, 'posts')
+				, orderBy("timestamp", "desc"))
+			, ({docs}) => {
+				if(docs.length >0){
+					setPosts(docs)
+				}
+			});
+	}, []);
 
 	return (
 		<div
@@ -37,9 +28,9 @@ const Feed = () => {
 			</div>
 			<Input/>
 			{
-				posts.map((post)=>(
+				posts.map((post:any)=>(
 					<div key={post.id}>
-						<Post postData={post}/>
+						<Post postData={post.data()}/>
 					</div>
 				))
 			}

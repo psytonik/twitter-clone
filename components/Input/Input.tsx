@@ -75,7 +75,7 @@ const Input = () => {
 					{image && (<div className="relative">
 						<XMarkIcon
 							onClick={()=>setImage(null)}
-							className="h-7 absolute cursor-pointer text-red-500 shadow-md rounded-full shadow-white"/>
+							className="border border-white h-7 absolute cursor-pointer text-red-500 shadow-md rounded-2xl m-1 shadow-white"/>
 							<img src={image} alt="temp" className={`rounded-2xl ${isLoading && "animate-pulse"}`}/>
 						</div>
 					)}
