@@ -4,6 +4,7 @@ import {Article} from "@/interfaces/article";
 import {News} from "@/components";
 import {Users} from "@/interfaces/users";
 import Image from "next/image";
+import {AnimatePresence,motion} from "framer-motion";
 
 type WidgetsComponentProps = {
 	articles:Article[],
@@ -24,11 +25,20 @@ const Widgets:FC<WidgetsComponentProps> = ({articles, totalArticles,users}) => {
 			</div>
 			<div className="text-gray-700 space-y-3 bg-gray-100 rounded-xl pt-2 w-[90%] xl:w-[75%]">
 				<h4 className="font-bold text-xl px-4">What&apos;s happening</h4>
-				{articles.slice(0,articleNum).map(article=>{
-					return(
-						<News key={article.url} article={article}/>
-					)
-				})}
+				<AnimatePresence>
+					{articles.slice(0,articleNum).map(article=>
+
+							<motion.div
+								initial={{opacity:0}}
+								animate={{opacity:1}}
+								exit={{opacity:0}}
+								transition={{duration:1}}
+								key={article.url}>
+								<News article={article}/>
+							</motion.div>
+
+					)}
+				</AnimatePresence>
 				<button
 					onClick={()=>setArticleNum(articleNum + 3)}
 					className={`text-blue-300 pl-4 pb-3 hover:text-blue-400 ${articleNum ==100 && 'hidden'}`}
@@ -38,20 +48,28 @@ const Widgets:FC<WidgetsComponentProps> = ({articles, totalArticles,users}) => {
 
 			<div className="text-gray-700 space-y-3 bg-gray-100 rounded-xl pt-2 w-[90%] xl:w-[75%] sticky top-16">
 				<h4 className="font-bold text-xl px-4">Who to Follow</h4>
-				{users.slice(0,randomUser).map(user=>{
-					return(
-						<div key={user.login.salt} className="flex items-center px-4 py-2 hover:bg-gray-200 ">
-							<Image src={user.picture.thumbnail} width={40} height={40} alt={user.email} className="rounded-full cursor-pointer"/>
-							<div className=" leading-5 cursor-pointer truncate ml-4">
-								<h4 className="font-bold hover:underline text-[14px] truncate">{user.name.title}. {user.name.first} {user.name.last}</h4>
-								<p className="truncate text-[13px] text-gray-500">@{user.login.username}</p>
+				<AnimatePresence>
+					{users.slice(0,randomUser).map(user=>
+						<motion.div
+							key={user.login.salt}
+							initial={{opacity:0}}
+							animate={{opacity:1}}
+							exit={{opacity:0}}
+							transition={{duration:1}}
+						>
+							<div className="flex items-center px-4 py-2 hover:bg-gray-200 transition duration-500 ease-out">
+								<Image src={user.picture.thumbnail} width={40} height={40} alt={user.email} className="rounded-full cursor-pointer"/>
+								<div className=" leading-5 cursor-pointer truncate ml-4">
+									<h4 className="font-bold hover:underline text-[14px] truncate">{user.name.title}. {user.name.first} {user.name.last}</h4>
+									<p className="truncate text-[13px] text-gray-500">@{user.login.username}</p>
+								</div>
+								<button
+									className={`text-white bg-black rounded-full text-sm font-bold px-3.5 py-1.5 ml-auto`}
+								>Follow</button>
 							</div>
-							<button
-								className={`text-white bg-black rounded-full text-sm font-bold px-3.5 py-1.5 ml-auto`}
-							>Follow</button>
-						</div>
-					)
-				})}
+						</motion.div>
+					)}
+				</AnimatePresence>
 				<button
 					onClick={()=>setRandomUser(randomUser + 3)}
 					className={`text-blue-300 pl-4 pb-3 hover:text-blue-400`}

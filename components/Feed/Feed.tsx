@@ -3,6 +3,7 @@ import {SparklesIcon} from "@heroicons/react/24/outline";
 import {Input, Post} from "@/components";
 import {collection, onSnapshot, orderBy, query} from "@firebase/firestore";
 import {db} from "@/firebase";
+import {AnimatePresence,motion} from "framer-motion";
 
 const Feed = () => {
 	const [posts, setPosts] = useState<any>([]);
@@ -27,13 +28,21 @@ const Feed = () => {
 				</div>
 			</div>
 			<Input/>
-			{
-				posts.map((post:any)=>(
-					<div key={post.id}>
-						<Post postData={post.data()} postId={post.id}/>
-					</div>
-				))
-			}
+			<AnimatePresence>
+				{
+					posts.map((post:any)=>(
+						<motion.div
+							key={post.id}
+							initial={{opacity:0}}
+							animate={{opacity:1}}
+							exit={{opacity:0}}
+							transition={{duration:1}}
+						>
+							<Post postData={post.data()} postId={post.id}/>
+						</motion.div>
+					))
+				}
+			</AnimatePresence>
 		</div>
 	);
 };
