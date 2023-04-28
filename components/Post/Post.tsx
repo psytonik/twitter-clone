@@ -21,6 +21,7 @@ type PostComponent = {
 	postData:IPost,
 	postId:string
 }
+
 const Post:FC<PostComponent> = ({postData,postId}) => {
 	const {data:session}:any = useSession();
 
@@ -40,7 +41,6 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 	const likePost = async ():Promise<void> => {
 		if(!hasLiked){
 			if(!session) {
-				// await router.push('/auth/signin');
 				await signIn()
 			} else {
 				await setDoc(doc(db,"posts",postId, "likes",session?.user.uid),{
@@ -52,7 +52,7 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 		}
 	};
 
-	const deletePost = async () => {
+	const deletePost = async ():Promise<void> => {
 		if(window.confirm("Are you sure you want to delete post ?")){
 			await deleteDoc(doc(db,"posts",postId))
 			if(postData.image){
@@ -60,6 +60,7 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 			}
 		}
 	}
+
 	return (
 		<div className="flex p-3 cursor-pointer border-b border-gray-200">
 			{/*{User Image}*/}
