@@ -55,9 +55,10 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 	const deletePost = async () => {
 		if(window.confirm("Are you sure you want to delete post ?")){
 			await deleteDoc(doc(db,"posts",postId))
-			await deleteObject(ref(storage, `posts/${postId}/image`))
+			if(postData.image){
+				await deleteObject(ref(storage, `posts/${postId}/image`))
+			}
 		}
-
 	}
 	return (
 		<div className="flex p-3 cursor-pointer border-b border-gray-200">
