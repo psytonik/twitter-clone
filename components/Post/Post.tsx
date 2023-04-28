@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState,useEffect} from 'react';
 import {
 	ChartBarIcon,
 	ChatBubbleOvalLeftEllipsisIcon,
@@ -7,20 +7,57 @@ import {
 	ShareIcon,
 	TrashIcon
 } from "@heroicons/react/24/outline";
+
 import {IPost} from "@/interfaces/post";
 import Moment from "react-moment";
+import {collection, deleteDoc, doc, onSnapshot, setDoc} from "@firebase/firestore";
+import {db} from "@/firebase";
+import {signIn, useSession} from "next-auth/react";
+import {HeartIcon as HeartIconFull} from "@heroicons/react/24/solid";
+import Image from 'next/image';
 
 type PostComponent = {
-	postData:IPost
+	postData:IPost,
+	postId:string
 }
-const Post:FC<PostComponent> = ({postData}) => {
+const Post:FC<PostComponent> = ({postData,postId}) => {
+	const {data:session}:any = useSession();
+
+	const [likes, setLikes] = useState<any[]>([]);
+	const [hasLiked, setHasLiked] = useState<boolean>(false);
+
+	useEffect(()=>{
+		onSnapshot(collection(db,'posts', postId,"likes"),({docs})=>{
+			setLikes(docs)
+		})
+	},[postId]);
+	useEffect(() => {
+		setHasLiked(likes.findIndex((like)=> like.id === session?.user?.uid) !== -1)
+	}, [likes,session]);
+
+	const likePost = async ():Promise<void> => {
+		if(!hasLiked){
+			if(!session) {
+				// await router.push('/auth/signin');
+				await signIn()
+			} else {
+				await setDoc(doc(db,"posts",postId, "likes",session?.user.uid),{
+					username: session.user.username
+				})
+			}
+		} else{
+			await deleteDoc(doc(db,"posts", postId,"likes", session?.user?.uid));
+		}
+	};
 
 	return (
 		<div className="flex p-3 cursor-pointer border-b border-gray-200">
 			{/*{User Image}*/}
-			<img
+			<Image
 				src={postData.userImage}
 				alt={postData.name}
+				width={44}
+				height={44}
 				className="h-11 w-11 rounded-full hover:brightness-95 mr-4"
 			/>
 			{/*{Right side}*/}
@@ -36,17 +73,37 @@ const Post:FC<PostComponent> = ({postData}) => {
 						</span>
 					</div>
 					<EllipsisHorizontalIcon
-						className="h-10 w-10 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100 p-2"/>
+						className="h-10 w-10 hoverEffect hover:text-sky-500 hover:bg-sky-100 p-2"/>
 				</div>
 
 				<p className="text-gray-800 text-[15px] sm:text-[16px] mb-2">{postData.text}</p>
-				{postData.image && (<img src={postData.image} alt={postData.text} className="rounded-2xl mr-2"/>)}
+				{postData.image && (
+					<img src={postData.image} alt={postData.text} className="rounded-2xl mr-2"/>
+				)}
 
 				{/*{Icons Block}*/}
 				<div className="flex justify-between text-gray-500 p-2">
 					<ChatBubbleOvalLeftEllipsisIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
 					<TrashIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"/>
-					<HeartIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"/>
+					<div className="flex items-center">
+						{hasLiked ? (
+							<HeartIconFull
+								onClick={()=>likePost()}
+								className={`h-9 w-9 hoverEffect text-red-500 p-2 hover:bg-red-100`}
+							/>
+						): (
+							<HeartIcon
+								onClick={()=>likePost()}
+								className={`h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100`}
+							/>
+						)
+						}
+						{likes.length > 0 && (
+							<span className={`${hasLiked && "text-red-600"} text-sm select-none`}>
+								{likes.length}
+							</span>
+						)}
+					</div>
 					<ShareIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
 					<ChartBarIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
 				</div>

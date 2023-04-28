@@ -92,7 +92,9 @@ const Sidebar = () => {
 					</button>
 					{/*{Mini Profile}*/}
 					<div className="hoverEffect flex text-gray-700 items-center justify-center xl:justify-start mt-auto">
-						<img
+						<Image
+							width={40}
+							height={40}
 							className="h-10 w-10 rounded-full xl:mr-2"
 							src={session.user.image}
 							onClick={()=>signOut()}

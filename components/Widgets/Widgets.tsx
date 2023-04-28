@@ -3,6 +3,7 @@ import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import {Article} from "@/interfaces/article";
 import {News} from "@/components";
 import {Users} from "@/interfaces/users";
+import Image from "next/image";
 
 type WidgetsComponentProps = {
 	articles:Article[],
@@ -40,7 +41,7 @@ const Widgets:FC<WidgetsComponentProps> = ({articles, totalArticles,users}) => {
 				{users.slice(0,randomUser).map(user=>{
 					return(
 						<div key={user.login.salt} className="flex items-center px-4 py-2 hover:bg-gray-200 ">
-							<img src={user.picture.thumbnail} width="40" alt={user.email} className="rounded-full cursor-pointer"/>
+							<Image src={user.picture.thumbnail} width={40} height={40} alt={user.email} className="rounded-full cursor-pointer"/>
 							<div className=" leading-5 cursor-pointer truncate ml-4">
 								<h4 className="font-bold hover:underline text-[14px] truncate">{user.name.title}. {user.name.first} {user.name.last}</h4>
 								<p className="truncate text-[13px] text-gray-500">@{user.login.username}</p>

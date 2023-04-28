@@ -4,6 +4,7 @@ import {signOut, useSession} from "next-auth/react";
 import {addDoc, collection, doc, serverTimestamp, updateDoc} from "@firebase/firestore";
 import {db, storage} from "@/firebase";
 import {getDownloadURL, ref, uploadString} from "@firebase/storage";
+import Image from "next/image";
 
 const Input = () => {
 	const {data: session}: any = useSession();
@@ -55,7 +56,9 @@ const Input = () => {
 	return (
 		<>
 			{session && (<div className="flex border-b border-gray-200 p-3 space-x-3">
-				<img
+				<Image
+					width={44}
+					height={44}
 					onClick={() => signOut()}
 					className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95 "
 					src={session.user?.image || ''}

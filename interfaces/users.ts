@@ -21,7 +21,7 @@ export interface Users{
 		}
 }
 export interface User {
-	mail: string
+	email: string
 	image:string
 	name:string
 	uid:string
