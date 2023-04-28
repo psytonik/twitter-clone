@@ -11,10 +11,11 @@ import {
 import {IPost} from "@/interfaces/post";
 import Moment from "react-moment";
 import {collection, deleteDoc, doc, onSnapshot, setDoc} from "@firebase/firestore";
-import {db} from "@/firebase";
+import {db, storage} from "@/firebase";
 import {signIn, useSession} from "next-auth/react";
 import {HeartIcon as HeartIconFull} from "@heroicons/react/24/solid";
 import Image from 'next/image';
+import {deleteObject, ref} from "@firebase/storage";
 
 type PostComponent = {
 	postData:IPost,
@@ -35,6 +36,7 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 		setHasLiked(likes.findIndex((like)=> like.id === session?.user?.uid) !== -1)
 	}, [likes,session]);
 
+
 	const likePost = async ():Promise<void> => {
 		if(!hasLiked){
 			if(!session) {
@@ -50,6 +52,13 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 		}
 	};
 
+	const deletePost = async () => {
+		if(window.confirm("Are you sure you want to delete post ?")){
+			await deleteDoc(doc(db,"posts",postId))
+			await deleteObject(ref(storage, `posts/${postId}/image`))
+		}
+
+	}
 	return (
 		<div className="flex p-3 cursor-pointer border-b border-gray-200">
 			{/*{User Image}*/}
@@ -84,7 +93,11 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 				{/*{Icons Block}*/}
 				<div className="flex justify-between text-gray-500 p-2">
 					<ChatBubbleOvalLeftEllipsisIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
-					<TrashIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"/>
+					{session?.user?.uid === postData.id &&(
+						<TrashIcon
+							onClick={()=>deletePost()}
+							className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"/>
+					)}
 					<div className="flex items-center">
 						{hasLiked ? (
 							<HeartIconFull
