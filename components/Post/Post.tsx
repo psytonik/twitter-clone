@@ -74,7 +74,7 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 				className="h-11 w-11 rounded-full hover:brightness-95 mr-4"
 			/>
 			{/*{Right side}*/}
-			<div className="">
+			<div className="flex-1">
 				{/*{Header}*/}
 				<div className="flex justify-between items-center">
 					{/*{Post User Info}*/}
@@ -91,13 +91,11 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 				<p className="text-gray-800 text-[15px] sm:text-[16px] mb-2">{postData.text}</p>
 					{postData.image && (
 						<Image
-							width={300}
-							height={300}
-							style={{
-								width: '100%',
-								height: 'auto',
-							}}
-							src={postData.image} alt={postData.text} className="rounded-2xl mr-2"/>
+							width={800} height={700} priority
+							src={postData.image}
+							alt={postData.text}
+							className="rounded-2xl mr-2    object-cover w-full"
+						/>
 					)}
 				{/*{Icons Block}*/}
 				<div className="flex justify-between text-gray-500 p-2">
