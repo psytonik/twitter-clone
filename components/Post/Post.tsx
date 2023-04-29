@@ -16,6 +16,8 @@ import {signIn, useSession} from "next-auth/react";
 import {HeartIcon as HeartIconFull} from "@heroicons/react/24/solid";
 import Image from 'next/image';
 import {deleteObject, ref} from "@firebase/storage";
+import {useRecoilState} from "recoil";
+import {modalState} from "@/Atoms/modalAtom";
 
 type PostComponent = {
 	postData:IPost,
@@ -24,7 +26,7 @@ type PostComponent = {
 
 const Post:FC<PostComponent> = ({postData,postId}) => {
 	const {data:session}:any = useSession();
-
+	const [open,setOpen] = useRecoilState(modalState);
 	const [likes, setLikes] = useState<any[]>([]);
 	const [hasLiked, setHasLiked] = useState<boolean>(false);
 
@@ -94,7 +96,9 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 
 				{/*{Icons Block}*/}
 				<div className="flex justify-between text-gray-500 p-2">
-					<ChatBubbleOvalLeftEllipsisIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
+					<ChatBubbleOvalLeftEllipsisIcon
+						onClick={()=>setOpen(!open)}
+						className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
 					{session?.user?.uid === postData.id &&(
 						<TrashIcon
 							onClick={()=>deletePost()}
