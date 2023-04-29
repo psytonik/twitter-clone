@@ -31,16 +31,17 @@ const Feed = () => {
 			<AnimatePresence>
 				{
 					posts.map((post:any)=>(
-						<motion.div
-							key={post.id}
-							initial={{opacity:0}}
-							animate={{opacity:1}}
-							exit={{opacity:0}}
-							transition={{duration:1}}
-						>
-							<Post postData={post.data()} postId={post.id}/>
-						</motion.div>
-					))
+							<motion.div
+								key={post.id}
+								initial={{opacity:0}}
+								animate={{opacity:1}}
+								exit={{opacity:0}}
+								transition={{duration:1}}
+							>
+								<Post postData={post.data()} postId={post.id}/>
+							</motion.div>
+						)
+					)
 				}
 			</AnimatePresence>
 		</div>

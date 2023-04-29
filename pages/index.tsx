@@ -1,4 +1,4 @@
-import {Feed, Modal, Sidebar, Widgets} from "@/components";
+import {Feed, CommentsModal, Sidebar, Widgets} from "@/components";
 import Head from "next/head";
 import {FC} from "react";
 import {Article} from "@/interfaces/article";
@@ -25,8 +25,8 @@ const Home:FC<HomeProps> = ({articles,totalArticles, users}) => {
 				<Feed/>
 				{/*{Widgets}*/}
 				<Widgets articles={articles} totalArticles={totalArticles} users={users}/>
-				{/*{Modal}*/}
-				<Modal/>
+				{/*{CommentsModal}*/}
+				<CommentsModal/>
 			</main>
 		</>
 	)

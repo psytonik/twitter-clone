@@ -5,7 +5,7 @@ import SidebarMenuItem from './SidebarMenuItem';
 import Input from "./Input";
 import Post from './Post';
 import News from './News';
-import Modal from './Modal';
+import CommentsModal from './CommentsModal';
 
 export {
 	Sidebar,
@@ -15,5 +15,5 @@ export {
 	Input,
 	Post,
 	News,
-	Modal
+	CommentsModal
 }

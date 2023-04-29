@@ -17,7 +17,7 @@ import {HeartIcon as HeartIconFull} from "@heroicons/react/24/solid";
 import Image from 'next/image';
 import {deleteObject, ref} from "@firebase/storage";
 import {useRecoilState} from "recoil";
-import {modalState} from "@/Atoms/modalAtom";
+import {modalState, postIdState} from "@/Atoms/modalAtom";
 
 type PostComponent = {
 	postData:IPost,
@@ -27,9 +27,9 @@ type PostComponent = {
 const Post:FC<PostComponent> = ({postData,postId}) => {
 	const {data:session}:any = useSession();
 	const [open,setOpen] = useRecoilState(modalState);
+	const [postIdS,setPostIdS] = useRecoilState(postIdState);
 	const [likes, setLikes] = useState<any[]>([]);
 	const [hasLiked, setHasLiked] = useState<boolean>(false);
-
 	useEffect(()=>{
 		onSnapshot(collection(db,'posts', postId,"likes"),({docs})=>{
 			setLikes(docs)
@@ -80,7 +80,7 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 					{/*{Post User Info}*/}
 					<div className="flex space-x-1 items-center whitespace-nowrap">
 						<h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">{postData.name}</h4>
-						<span className="text-sm sm:text-[15px]">{postData.username}</span>
+						<span className="text-sm sm:text-[15px]">@{postData.username}</span>
 						<span className="text-sm sm:text-[15px] hover:underline">
 							<Moment fromNow>{postData?.timestamp?.toDate()}</Moment>
 						</span>
@@ -97,7 +97,15 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 				{/*{Icons Block}*/}
 				<div className="flex justify-between text-gray-500 p-2">
 					<ChatBubbleOvalLeftEllipsisIcon
-						onClick={()=>setOpen(!open)}
+
+						onClick={async ()=>{
+							if(!session){
+								await signIn()
+							}else{
+								setPostIdS(postId)
+								setOpen(!open)
+							}
+						}}
 						className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
 					{session?.user?.uid === postData.id &&(
 						<TrashIcon
