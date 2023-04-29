@@ -29,12 +29,18 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 	const [open,setOpen] = useRecoilState(modalState);
 	const [,setPostIdS] = useRecoilState(postIdState);
 	const [likes, setLikes] = useState<any[]>([]);
+	const [comments, setComments] = useState<any[]>([]);
 	const [hasLiked, setHasLiked] = useState<boolean>(false);
 	useEffect(()=>{
 		onSnapshot(collection(db,'posts', postId,"likes"),({docs})=>{
 			setLikes(docs)
 		})
 	},[postId]);
+	useEffect(()=>{
+		onSnapshot(collection(db,"posts",postId,"comments"),({docs})=>{
+			setComments(docs);
+		})
+	},[postId])
 	useEffect(() => {
 		setHasLiked(likes.findIndex((like)=> like.id === session?.user?.uid) !== -1)
 	}, [likes,session]);
@@ -99,17 +105,25 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 					)}
 				{/*{Icons Block}*/}
 				<div className="flex justify-between text-gray-500 p-2">
-					<ChatBubbleOvalLeftEllipsisIcon
+					<div className="flex items-center select-none">
+						<ChatBubbleOvalLeftEllipsisIcon
 
-						onClick={async ()=>{
-							if(!session){
-								await signIn()
-							}else{
-								setPostIdS(postId)
-								setOpen(!open)
-							}
-						}}
-						className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
+							onClick={async ()=>{
+								if(!session){
+									await signIn()
+								}else{
+									setPostIdS(postId)
+									setOpen(!open)
+								}
+							}}
+							className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
+						/>
+						{comments.length >0 && (
+							<span className={`text-sm `}>
+								{comments.length}
+							</span>
+						)}
+					</div>
 					{session?.user?.uid === postData.id &&(
 						<TrashIcon
 							onClick={()=>deletePost()}
