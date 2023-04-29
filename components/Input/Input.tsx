@@ -79,7 +79,15 @@ const Input = () => {
 						<XMarkIcon
 							onClick={()=>setImage(null)}
 							className="border border-white h-7 absolute cursor-pointer text-red-500 shadow-md rounded-2xl m-1 shadow-white"/>
-							<img src={image} alt="temp" className={`rounded-2xl ${isLoading && "animate-pulse"}`}/>
+							<Image
+								width={300}
+								height={400}
+								sizes="100vw"
+								style={{
+									width: '100%',
+									height: 'auto',
+								}}
+								src={image} alt="temp" className={`rounded-2xl ${isLoading && "animate-pulse"}`}/>
 						</div>
 					)}
 

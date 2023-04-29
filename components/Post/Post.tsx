@@ -27,7 +27,7 @@ type PostComponent = {
 const Post:FC<PostComponent> = ({postData,postId}) => {
 	const {data:session}:any = useSession();
 	const [open,setOpen] = useRecoilState(modalState);
-	const [postIdS,setPostIdS] = useRecoilState(postIdState);
+	const [,setPostIdS] = useRecoilState(postIdState);
 	const [likes, setLikes] = useState<any[]>([]);
 	const [hasLiked, setHasLiked] = useState<boolean>(false);
 	useEffect(()=>{
@@ -88,12 +88,17 @@ const Post:FC<PostComponent> = ({postData,postId}) => {
 					<EllipsisHorizontalIcon
 						className="h-10 w-10 hoverEffect hover:text-sky-500 hover:bg-sky-100 p-2"/>
 				</div>
-
 				<p className="text-gray-800 text-[15px] sm:text-[16px] mb-2">{postData.text}</p>
-				{postData.image && (
-					<img src={postData.image} alt={postData.text} className="rounded-2xl mr-2"/>
-				)}
-
+					{postData.image && (
+						<Image
+							width={300}
+							height={300}
+							style={{
+								width: '100%',
+								height: 'auto',
+							}}
+							src={postData.image} alt={postData.text} className="rounded-2xl mr-2"/>
+					)}
 				{/*{Icons Block}*/}
 				<div className="flex justify-between text-gray-500 p-2">
 					<ChatBubbleOvalLeftEllipsisIcon
