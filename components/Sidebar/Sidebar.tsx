@@ -3,6 +3,7 @@ import Image from 'next/image';
 import SidebarMenuItem from "../SidebarMenuItem";
 import {HashtagIcon, HomeIcon,BellIcon,EnvelopeIcon,BookmarkIcon,ClipboardIcon,UserIcon,EllipsisHorizontalCircleIcon,EllipsisHorizontalIcon} from "@heroicons/react/24/outline";
 import {useSession, signIn, signOut} from "next-auth/react";
+import Link from "next/link";
 
 const menus:any = [
 	{
@@ -49,12 +50,14 @@ const Sidebar = () => {
 		<div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full xl:ml-24">
 			{/*{Twitter Logo}*/}
 			<div className="hoverEffect hover:bg-blue-100 p-3">
-				<Image
-					width="50"
-					height="50"
-					alt="logo of twitter"
-					src="https://upload.wikimedia.org/wikipedia/sco/9/9f/Twitter_bird_logo_2012.svg"
-				/>
+				<Link href={"/"}>
+					<Image
+						width="50"
+						height="50"
+						alt="logo of twitter"
+						src="https://upload.wikimedia.org/wikipedia/sco/9/9f/Twitter_bird_logo_2012.svg"
+					/>
+				</Link>
 			</div>
 			{!session && (
 				<>
