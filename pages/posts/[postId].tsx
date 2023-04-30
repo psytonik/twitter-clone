@@ -16,12 +16,12 @@ type PostByIdProps = {
 }
 const PostById:FC<PostByIdProps> = ({articles,totalArticles, users}) => {
 	const router:NextRouter = useRouter();
-	const {postId} = router.query;
+	const postId = router.query.postId as string;
 	const [post,setPost] = useState<any>(null);
 
 	useEffect(() => {
 		if(!postId) return;
-		onSnapshot(doc(db,"posts", postId as string),(snapshot)=>{
+		onSnapshot(doc(db,"posts", postId),(snapshot)=>{
 			setPost(snapshot)
 		})
 	}, [postId]);
@@ -45,10 +45,10 @@ const PostById:FC<PostByIdProps> = ({articles,totalArticles, users}) => {
 						</div>
 						<h2 className="text-lg sm:text-xl font-bold cursor-pointer">Tweet</h2>
 					</div>
-					{post && (
+					{post && postId && (
 						<Post
 							postData={post.data()}
-							postId={postId as string}
+							postId={postId}
 						/>
 					)}
 				</div>
