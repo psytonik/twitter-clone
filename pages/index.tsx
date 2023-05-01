@@ -26,7 +26,7 @@ const Home:FC<HomeProps> = ({articles,totalArticles, users}) => {
 				{/*{Widgets}*/}
 				<Widgets articles={articles} totalArticles={totalArticles} users={users}/>
 				{/*{CommentsModal}*/}
-				<CommentsModal/>
+				<CommentsModal postId={undefined}/>
 			</main>
 		</>
 	)

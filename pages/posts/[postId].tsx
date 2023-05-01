@@ -1,13 +1,14 @@
 import React, {FC, useEffect, useState} from 'react';
 import {NextRouter, useRouter} from "next/router";
 import Head from "next/head";
-import {Post, Sidebar, Widgets} from "@/components";
+import {CommentsModal, Post, Sidebar, Widgets} from "@/components";
 import {GetServerSideProps} from "next";
 import {Article} from "@/interfaces/article";
 import {Users} from "@/interfaces/users";
 import {ArrowLeftIcon} from "@heroicons/react/24/outline";
-import {doc, onSnapshot} from "@firebase/firestore";
+import {collection, doc, onSnapshot, orderBy, query} from "@firebase/firestore";
 import {db} from "@/firebase";
+import Comments from "../../components/Comments";
 
 type PostByIdProps = {
 	articles:Article[],
@@ -18,6 +19,7 @@ const PostById:FC<PostByIdProps> = ({articles,totalArticles, users}) => {
 	const router:NextRouter = useRouter();
 	const postId = router.query.postId as string;
 	const [post,setPost] = useState<any>(null);
+	const [comments,setComments] = useState<any[]>([]);
 
 	useEffect(() => {
 		if(!postId) return;
@@ -25,6 +27,14 @@ const PostById:FC<PostByIdProps> = ({articles,totalArticles, users}) => {
 			setPost(snapshot)
 		})
 	}, [postId]);
+
+	useEffect(()=>{
+		if(!postId) return;
+		onSnapshot(query(collection(db,"posts",postId,"Comments"),orderBy('timestamp','desc')),({docs})=>{
+			setComments(docs)
+		})
+	},[postId])
+
 	return (
 		<>
 			<Head>
@@ -51,10 +61,21 @@ const PostById:FC<PostByIdProps> = ({articles,totalArticles, users}) => {
 							postId={postId}
 						/>
 					)}
+					{comments.length > 0 && comments.map(comment=>{
+						return(
+							<Comments
+								key={comment.id}
+								comment={comment.data()}
+								commentId={comment.id}/>
+
+						)
+					})}
 				</div>
 
 				{/*{Widgets}*/}
 				<Widgets articles={articles} totalArticles={totalArticles} users={users}/>
+				{/*{CommentsModal}*/}
+				<CommentsModal postId={postId}/>
 			</main>
 		</>
 	);

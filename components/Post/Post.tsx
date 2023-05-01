@@ -40,7 +40,7 @@ const Post:FC<PostComponent> =  ({postData,postId}) => {
 		})
 	},[postId]);
 	useEffect(()=>{
-		onSnapshot(collection(db,"posts",postId,"comments"),({docs})=>{
+		onSnapshot(collection(db,"posts",postId,"Comments"),({docs})=>{
 			setComments(docs);
 		})
 	},[postId])
@@ -113,6 +113,7 @@ const Post:FC<PostComponent> =  ({postData,postId}) => {
 								className="rounded-2xl mr-2  w-full h-auto"
 							/>
 						)}
+
 						{/*{Icons Block}*/}
 						<div className="flex justify-between text-gray-500 p-2">
 							<div className="flex items-center select-none">

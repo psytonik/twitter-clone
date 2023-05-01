@@ -6,6 +6,8 @@ import Input from "./Input";
 import Post from './Post';
 import News from './News';
 import CommentsModal from './CommentsModal';
+import Comments from './Comments';
+
 
 export {
 	Sidebar,
@@ -15,5 +17,6 @@ export {
 	Input,
 	Post,
 	News,
-	CommentsModal
+	CommentsModal,
+	Comments
 }
