@@ -66,7 +66,9 @@ const PostById:FC<PostByIdProps> = ({articles,totalArticles, users}) => {
 							<Comments
 								key={comment.id}
 								comment={comment.data()}
-								commentId={comment.id}/>
+								commentId={comment.id}
+								originalPostId={postId}
+							/>
 
 						)
 					})}

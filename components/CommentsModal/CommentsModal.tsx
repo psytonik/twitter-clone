@@ -20,7 +20,6 @@ const CommentsModal:FC<CommentsModalProps> = ({postId}) => {
 	const [text, setText] = useState('')
 	const {data: session}: any = useSession();
 	const router = useRouter();
-
 	useEffect(() => {
 		onSnapshot(doc(db, "posts", postIdS), (snapshot) => {
 			setPosts(snapshot)
@@ -33,7 +32,8 @@ const CommentsModal:FC<CommentsModalProps> = ({postId}) => {
 			name:session.user.name,
 			username:session.user.username,
 			userImage:session.user.image,
-			timestamp:serverTimestamp()
+			timestamp:serverTimestamp(),
+			uid:session.user.uid
 		});
 		setOpen(false);
 		setText('');
